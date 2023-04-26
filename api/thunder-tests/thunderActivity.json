@@ -1,0 +1,51 @@
+[
+  {
+    "_id": "ace914bf-2adb-42ec-b853-d043535f0c27",
+    "colId": "history",
+    "containerId": "",
+    "name": "http://localhost:3000",
+    "url": "http://localhost:3000?nome=Rommel",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-04-18T23:40:56.076Z",
+    "modified": "2023-04-19T00:15:26.221Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "nome",
+        "value": "Rommel",
+        "isPath": false
+      }
+    ],
+    "body": {
+      "type": "formencoded",
+      "raw": "",
+      "form": [
+        {
+          "name": "nome",
+          "value": "Rommel"
+        }
+      ]
+    },
+    "tests": []
+  },
+  {
+    "_id": "a5cf1162-256a-44ab-ba29-5631ffc6de62",
+    "colId": "history",
+    "containerId": "",
+    "name": "http://localhost:3000",
+    "url": "http://localhost:3000",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-04-18T23:41:45.382Z",
+    "modified": "2023-04-18T23:49:46.543Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"nome\": \"Rommel Carneiro\"\n}",
+      "form": []
+    },
+    "tests": []
+  }
+]

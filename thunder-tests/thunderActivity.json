@@ -1,0 +1,97 @@
+[
+  {
+    "_id": "7c853a2a-7399-4f7d-a1a6-80ce13b21b76",
+    "colId": "history",
+    "containerId": "",
+    "name": "https://www.thunderclient.com/welcome",
+    "url": "https://www.thunderclient.com/welcome",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-04-25T22:32:38.936Z",
+    "modified": "2023-04-25T22:32:38.936Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{  \n  \"descricao\": \"Cerveja Heineken\", \n  \"valor\": 8.00, \n  \"marca\": \"Heineken\"  \n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "c769f175-981f-48a9-b749-f6a3c4b50859",
+    "colId": "history",
+    "containerId": "",
+    "name": "https://localhost:3000/produtos",
+    "url": "https://localhost:3000/produtos",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-04-25T22:32:59.682Z",
+    "modified": "2023-04-25T22:32:59.682Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{  \n  \"descricao\": \"Cerveja Heineken\", \n  \"valor\": 8.00, \n  \"marca\": \"Heineken\"  \n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "836d9e83-786a-415d-bb41-734b2e5a3939",
+    "colId": "history",
+    "containerId": "",
+    "name": "https://localhost:3000/api/produtos",
+    "url": "https://localhost:3000/api/produtos",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-04-25T22:33:11.321Z",
+    "modified": "2023-04-25T22:33:11.321Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{  \n  \"descricao\": \"Cerveja Heineken\", \n  \"valor\": 8.00, \n  \"marca\": \"Heineken\"  \n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "e93923b6-e06e-432b-a474-71e4b47e4410",
+    "colId": "history",
+    "containerId": "",
+    "name": "http://localhost:3000/api/produtos",
+    "url": "http://localhost:3000/api/v2/produtos",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-04-25T22:33:16.667Z",
+    "modified": "2023-04-26T00:33:03.719Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "[\n      { \"descricao\": \"Arroz parboilizado 5Kg\", \"valor\": 25.00, \"marca\": \"Tio João\"  },\n      { \"descricao\": \"Maionese 250gr\", \"valor\": 7.20, \"marca\": \"Helmans\"  },\n      { \"descricao\": \"Iogurte Natural 200ml\", \"valor\": 2.50, \"marca\": \"Itambé\"  },\n      { \"descricao\": \"Batata Maior Palha 300gr\", \"valor\": 15.20, \"marca\": \"Chipps\"  },\n      { \"descricao\": \"Nescau 400gr\", \"valor\": 8.00, \"marca\": \"Nestlé\"  }\n  ]",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "4df406d3-740d-4679-83d0-afd8093be606",
+    "colId": "history",
+    "containerId": "",
+    "name": "http://localhost:3000/api/produtos",
+    "url": "http://localhost:3000/api/v2/produtos",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-04-25T22:33:27.025Z",
+    "modified": "2023-04-26T00:33:16.097Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "[\n      { \"descricao\": \"Arroz parboilizado 5Kg\", \"valor\": 25.00, \"marca\": \"Tio João\"  },\n      { \"descricao\": \"Maionese 250gr\", \"valor\": 7.20, \"marca\": \"Helmans\"  },\n      { \"descricao\": \"Iogurte Natural 200ml\", \"valor\": 2.50, \"marca\": \"Itambé\"  },\n      { \"descricao\": \"Batata Maior Palha 300gr\", \"valor\": 15.20, \"marca\": \"Chipps\"  },\n      { \"descricao\": \"Nescau 400gr\", \"valor\": 8.00, \"marca\": \"Nestlé\"  }\n  ]",
+      "form": []
+    },
+    "tests": []
+  }
+]
