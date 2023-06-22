@@ -1,8 +1,8 @@
 const express = require ('express')
-const routerAPI = express.Router()
+const routerAPIv1 = express.Router()
 
-routerAPI.use (express.urlencoded())
-routerAPI.use (express.json())
+routerAPIv1.use (express.urlencoded( { extended: true } ))
+routerAPIv1.use (express.json())
 
 const lista_produtos = {
   produtos: [
@@ -15,16 +15,16 @@ const lista_produtos = {
 }
 
 // Cria um manipulador da rota padrão 
-routerAPI.get('/produtos', function (req, res) {
+routerAPIv1.get('/produtos', function (req, res) {
   res.json(lista_produtos)
 })
   
 // Cria um manipulador da rota padrão 
-routerAPI.post('/produtos', function (req, res) {
+routerAPIv1.post('/produtos', function (req, res) {
   req.body.id = lista_produtos.produtos.length + 1;
   lista_produtos.produtos.push (req.body);
   res.json (`{ message: "Produto inserido com sucesso" }`)
 })
 
 
-module.exports = routerAPI
+module.exports = routerAPIv1

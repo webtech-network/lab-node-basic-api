@@ -1,157 +1,80 @@
 [
   {
-    "_id": "7c853a2a-7399-4f7d-a1a6-80ce13b21b76",
+    "_id": "015a0fab-2552-4342-aeb7-8291e1275a56",
     "colId": "history",
     "containerId": "",
-    "name": "https://www.thunderclient.com/welcome",
-    "url": "https://www.thunderclient.com/welcome",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-04-25T22:32:38.936Z",
-    "modified": "2023-04-25T22:32:38.936Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{  \n  \"descricao\": \"Cerveja Heineken\", \n  \"valor\": 8.00, \n  \"marca\": \"Heineken\"  \n}",
-      "form": []
-    },
-    "tests": []
-  },
-  {
-    "_id": "c769f175-981f-48a9-b749-f6a3c4b50859",
-    "colId": "history",
-    "containerId": "",
-    "name": "https://localhost:3000/produtos",
-    "url": "https://localhost:3000/produtos",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-04-25T22:32:59.682Z",
-    "modified": "2023-04-25T22:32:59.682Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{  \n  \"descricao\": \"Cerveja Heineken\", \n  \"valor\": 8.00, \n  \"marca\": \"Heineken\"  \n}",
-      "form": []
-    },
-    "tests": []
-  },
-  {
-    "_id": "836d9e83-786a-415d-bb41-734b2e5a3939",
-    "colId": "history",
-    "containerId": "",
-    "name": "https://localhost:3000/api/produtos",
-    "url": "https://localhost:3000/api/produtos",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-04-25T22:33:11.321Z",
-    "modified": "2023-04-25T22:33:11.321Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{  \n  \"descricao\": \"Cerveja Heineken\", \n  \"valor\": 8.00, \n  \"marca\": \"Heineken\"  \n}",
-      "form": []
-    },
-    "tests": []
-  },
-  {
-    "_id": "e93923b6-e06e-432b-a474-71e4b47e4410",
-    "colId": "history",
-    "containerId": "",
-    "name": "http://localhost:3000/api/produtos",
-    "url": "http://localhost:3000/api/v2/produtos/2",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-04-25T22:33:16.667Z",
-    "modified": "2023-05-03T01:23:04.866Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "[\n      { \"descricao\": \"Arroz parboilizado 5Kg\", \"valor\": 25.00, \"marca\": \"Tio João\"  },\n      { \"descricao\": \"Maionese 250gr\", \"valor\": 7.20, \"marca\": \"Helmans\"  },\n      { \"descricao\": \"Iogurte Natural 200ml\", \"valor\": 2.50, \"marca\": \"Itambé\"  },\n      { \"descricao\": \"Batata Maior Palha 300gr\", \"valor\": 15.20, \"marca\": \"Chipps\"  },\n      { \"descricao\": \"Nescau 400gr\", \"valor\": 8.00, \"marca\": \"Nestlé\"  }\n  ]",
-      "form": []
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZXMiOiJVU0VSO0FETUlOIiwiaWF0IjoxNjgzMDc2MTA5LCJleHAiOjE2ODMwNzk3MDl9.bbuyXvTH-V0bPfrA3FJloLvJI_xhZ6nDsdNTGfIHeo"
-    },
-    "tests": []
-  },
-  {
-    "_id": "4df406d3-740d-4679-83d0-afd8093be606",
-    "colId": "history",
-    "containerId": "",
-    "name": "http://localhost:3000/api/produtos",
-    "url": "http://localhost:3000/api/v2/produtos",
+    "name": "POST /seg/login",
+    "url": "http://localhost:3000/seg/login",
     "method": "POST",
     "sortNum": 0,
-    "created": "2023-04-25T22:33:27.025Z",
-    "modified": "2023-04-26T00:33:16.097Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "[\n      { \"descricao\": \"Arroz parboilizado 5Kg\", \"valor\": 25.00, \"marca\": \"Tio João\"  },\n      { \"descricao\": \"Maionese 250gr\", \"valor\": 7.20, \"marca\": \"Helmans\"  },\n      { \"descricao\": \"Iogurte Natural 200ml\", \"valor\": 2.50, \"marca\": \"Itambé\"  },\n      { \"descricao\": \"Batata Maior Palha 300gr\", \"valor\": 15.20, \"marca\": \"Chipps\"  },\n      { \"descricao\": \"Nescau 400gr\", \"valor\": 8.00, \"marca\": \"Nestlé\"  }\n  ]",
-      "form": []
-    },
-    "tests": []
-  },
-  {
-    "_id": "fb383d8f-8d86-4ca3-a930-3308e6efe17f",
-    "colId": "history",
-    "containerId": "",
-    "name": "http://localhost:3000/api/v2/seguranca/register",
-    "url": "http://localhost:3000/api/v2/seguranca/register",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-05-03T00:13:02.788Z",
-    "modified": "2023-05-03T00:13:02.788Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n  \"nome\": \"Rommel Vieira Carneiro\",\n  \"login\": \"rommel\",\n  \"senha\": \"1234\",\n  \"email\": \"rommelcarneiro@gmail.com\"\n}",
-      "form": []
-    },
-    "tests": []
-  },
-  {
-    "_id": "bf216813-2667-49fa-924f-73bdbe34fbe8",
-    "colId": "history",
-    "containerId": "",
-    "name": "http://localhost:3000/api/v2/seguranca/register",
-    "url": "http://localhost:3000/api/v2/seguranca/register",
-    "method": "POST",
-    "sortNum": 0,
-    "created": "2023-05-03T00:13:10.439Z",
-    "modified": "2023-05-03T00:16:59.179Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n  \"nome\": \"Usuario padrão\",\n  \"login\": \"user\",\n  \"senha\": \"1234\",\n  \"email\": \"user@gmail.com\"\n}",
-      "form": []
-    },
-    "tests": []
-  },
-  {
-    "_id": "70d6a4c5-7ba8-4756-a7a9-fcc601201bcb",
-    "colId": "history",
-    "containerId": "",
-    "name": "http://localhost:3000/api/v2/seguranca/login",
-    "url": "http://localhost:3000/api/v2/seguranca/login",
-    "method": "POST",
-    "sortNum": 0,
-    "created": "2023-05-03T00:30:24.538Z",
-    "modified": "2023-05-03T01:08:29.129Z",
+    "created": "2023-06-22T13:50:56.516Z",
+    "modified": "2023-06-22T14:04:44.969Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
       "raw": "{\n  \"login\": \"admin\",\n  \"senha\": \"1234\"\n}",
       "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "b5d087b1-e09a-4a75-962b-4cbd0d49ae7d",
+    "colId": "history",
+    "containerId": "",
+    "name": "POST /seg/register",
+    "url": "http://localhost:3000/seg/register",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-06-22T13:50:56.516Z",
+    "modified": "2023-06-22T13:58:15.850Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"nome\": \"Rommel V. Carneiro\",\n  \"email\": \"rommel@abc.com\",\n  \"login\": \"rommelcarneiro\",\n  \"senha\": \"1234\"\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "956765f9-3ee4-44ca-becc-8e0f20a06e2e",
+    "colId": "history",
+    "containerId": "",
+    "name": "GET /api/v2/produtos",
+    "url": "http://localhost:3000/api/v2/produtos",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-06-22T13:53:49.438Z",
+    "modified": "2023-06-22T13:53:49.438Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZXMiOiJBRE1JTjtVU0VSIiwiaWF0IjoxNjg3NDQxOTY1LCJleHAiOjE2ODc0NDU1NjV9.b344l4nNs_wsfggvth6FZBV6_-aQk5-exIyzAc0M7Io"
+    },
+    "tests": []
+  },
+  {
+    "_id": "8c93a9f1-f7bf-4b06-85d9-57031e4163b1",
+    "colId": "history",
+    "containerId": "",
+    "name": "POST /api/v2/produtos",
+    "url": "http://localhost:3000/api/v2/produtos",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-06-22T13:53:49.438Z",
+    "modified": "2023-06-22T14:05:04.210Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n   \"descricao\": \"Cerveja 600ml\", \"valor\": 12.00, \"marca\": \"Heineken\"\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZXMiOiJBRE1JTjtVU0VSIiwiaWF0IjoxNjg3NDQyNjg0LCJleHAiOjE2ODc0NDYyODR9.qjd8dTg9oDn85mKcPyE7mxBKkP2_AlrY0n_uv9XKlQ0"
     },
     "tests": []
   }
