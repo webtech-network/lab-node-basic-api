@@ -28,5 +28,5 @@ app.use (function (req, res) {
 // Inicializa o servidor HTTP
 const PORT = process.env.PORT || 3000
 app.listen (PORT, function () {
-  console.log (`Servidor rodando em http://${SERVER}:${PORT}`)
+  console.log (`Servidor rodando na porta: ${PORT}`)
 })
