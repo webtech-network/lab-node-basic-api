@@ -27,7 +27,6 @@ app.use (function (req, res) {
 
 // Inicializa o servidor HTTP
 const PORT = process.env.PORT || 3000
-const SERVER = '127.0.0.1' 
-app.listen (PORT, SERVER, function () {
+app.listen (PORT, function () {
   console.log (`Servidor rodando em http://${SERVER}:${PORT}`)
 })
