@@ -9,9 +9,9 @@ No passo a passo implementaremos isso de forma gradual.
 ## Passo 1 – Criar a aplicação de arquivos estáticos
 Abra uma nova pasta para esse projeto, e no diretório dessa pasta, pelo terminal execute o comando de inicialização do projeto Node: 
 
-```bash
-npm init -y   #Comando de incialização de um projeto em Node
-```
+> ```bash
+> $ npm init -y   #Comando de incialização de um projeto em Node
+> ```
 
 Em seguida, devemos instalar os pacotes e dependências que utilizaremos em nosso projeto:
 
@@ -75,17 +75,17 @@ Essa deve ser a estrutura do projeto:
 
 Agora, para ajudar na manutenção e nos testes da aplicação, vamos instalar um pacote chamado NodeMon, que reinicia o servidor toda vez que identifica uma mudança na estrutura do projeto ou na versão de um arquivo. Execute o seguinte comando: 
 
-```bash
-npm install -g nodemon
-```
+>```bash
+> $ npm install -g nodemon
+>```
 
 OBS: O parâmetro ‘-g’ é utilizado para instalar o pacote em todos os projetos de Node de maneira global.
 
 Para teste execute o nodemon sobre o arquivo ‘server.js’, da seguinte maneira:
 
-```bash
-nodemon server.js
-```
+>```bash
+>nodemon server.js
+>```
 
 Verifique o funcionamento, acessando o endereço: [**http://localhost:3000/app/**](http://localhost:3000/app/)
 
