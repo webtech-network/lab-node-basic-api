@@ -2,87 +2,119 @@
 
 # API RESTful com BD, Segurança e Docker
 
-Neste roteiro vamos montar uma API RESTful para a realização das operações de um CRUD (Create, Read, Update e Delete) que oferece segurança integrada baseada no uso de tokens JWT (JSON Web Token) como formato identificação.
+A partir desse roteiro de etapas vamos desenvolver uma API RESTful para a execução de operações CRUD (Create, Read, Update, Delete) sob uma base de dados, parâmetrizando a segurança e acesso a esses dados com uso de tokens JWT( Json Web Token). 
 
-O passo a passo vai conduzir a criação dessa API de forma gradual.
+No passo a passo implementaremos isso de forma gradual.
 
 ## Passo 1 – Criar a aplicação de arquivos estáticos
+Abra uma nova pasta para esse projeto, e no diretório dessa pasta, pelo terminal execute o comando de inicialização do projeto Node: 
 
-Abra uma pasta para o novo projeto com o Visual Studio Code a e inicie o projeto com o npm **(npm init -y)** e instale os seguintes pacotes: express, dotenv, knex, pg, bcryptjs, jsonwebtoken e cors. Um comando direto para a instalação segue abaixo.
+```bash
+npm init -y   #Comando de incialização de um projeto em Node
+```
+
+Em seguida, devemos instalar os pacotes e dependências que utilizaremos em nosso projeto:
 
 > ```bash
 > $ npm install express dotenv knex pg bcryptjs jsonwebtoken cors –save
 > ```
 
-**OBSERVAÇÃO:** observe o parâmetro --save que informa ao npm para incluir tais módulos como dependências do projeto no arquivo `package.json`.
+**OBS:** O parâmetro “—save” informa que todas esses pacotes serão inseridos como dependência no arquivo “package.json”.
 
-Em seguida, utilize o código apresentado no Quadro 1 para criar o arquivo `server.js` e estabelecer um servidor baseado no Express já preparado para aceitar requisições com o CORS e processar o corpo das requisições interpretando formatos json e urlencoded. Adicionalmente, nosso servidor já estabelecerá uma pasta `/public` para os arquivos estáticos da parte cliente da nossa aplicação. Esta pasta será acessada por meio da rota `/app` nas URLs.
+Em seguida, devemos criar um arquivo chamado “server.js” com o conteúdo apresentado no Quadro 1. Esse arquivo será utilizado para estabelecer um servidor baseado em Express que já esteja pronto para aceitar requisições com o CORS e processar o corpo das requisições, interpretando formatos “json’ e “urlencoded”. Os arquivos estáticos do nosso projeto serão acessados por uma pasta “/public” que estão dentro da pasta “/app”. dentro de outra pasta chamada “/app”.
 
 ### Quadro 1 - Código para o servidor server.js.
 
 ```javascript
 require('dotenv').config()
 
-const express = require ('express')
-const cors = require('cors');
-const path = require ('path')
-const app = express ()
+const express = require('express')
+const cors = require('cors')
+const path = require('path')
+const app = express()
 
 app.use(cors())
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
-app.use('/app', express.static (path.join (__dirname, '/public')))
+app.use('/app', express.static(path.join(__dirname, '/public')))
 
 let port = process.env.PORT || 3000
-app.listen (port)
+app.listen(port)
+
+```
+Em seguida, vamos desenvolver o restante dos arquivos e pastas relacionados ao projeto. Devemos criar o arquivo ‘.gitignore’ para ignorar arquivos desnecessários quando inicializarmos o projeto como repositório no GitHub. Adicione também o arquivo ‘node_modules’ e ‘.env’Agora devemos desenvolver o restantes dos arquivos e pastas necessários para a manutenção do projeto. Vamos criar o arquivo “.gitignore” para ignorar a presença de arquivos desncessários para quando incializarmos o projeto como repositório no GitHub. Crie também o arquivo ‘.env’ para configurações locais. Em seguida, adicione os conteúdos de respectivos arquivos:
+
+### Arquivo ‘.gitignore’ :
+
+```bash
+node_modules/
+.env
+*.log
+.DS_Store
+dist/
+build/
 ```
 
-Ao finalizar a instalação, inicialize o repositório local do git (**git init**). Crie, também, o arquivo `.gitignore` para ignorar arquivos desnecessários para subirmos para os repositórios remotos. Inclua a pasta `node_modules` e o arquivo `.env` que irá nos ajudar nas configurações locais.
+### Arquivo ‘.env’ :
 
-Na sequência, crie uma pasta `public` e inclua os arquivos `index.html`, `app.js` e `style.css` colocando um conteúdo consistente, porém fictício em cada um deles, de tal forma que o navegador ao obter os arquivos exiba uma página de fundo amarelo e que ao terminar de ser carregada, exiba um alerta de boas-vindas via Javascript.
+```bash
+SECRET_KEY=minha_chave_super_secreta_jwt_123456789
+NODE_ENV=development
+PORT=3000
+DATABASE_URL= #Preencheremos depois
+```
 
-A estrutura do projeto deverá ficar tal como o seguinte quadro.
 
-![arvore-de-arquivos](./documentation/img/arvore-de-arquivos.png)
+Em sequência, crie a pasta chamada ‘public’ e dentro da mesma, insira os arquivos : ‘index.html’, ‘style.css’ e ‘script.js’. Dentro delas, insira um conteúdo consistente, porém fictício em cada uma delas, de forma que o navegador ao obter os arquivos exiba o conteúdo dos arquivos.
 
-Para nos ajudar no processo de testes da aplicação, vamos instalar o NodeMon que reinicia o servidor Node.js todas as vezes que um arquivo for alterado. Para isso execute o seguinte comando:
+Essa deve ser a estrutura do projeto:
 
-> $ npm install -g nodemon
 
-**OBSERVAÇÃO:** observe o parâmetro -g para instalação do nodemon de forma global para utilizar em todos os seus projetos.
+![arvore-de-arquivos](./documentation/img/tree.png)
 
-Execute o nodemon sobre o arquivo `server.js` **(nodemon server.js)** e faça um teste do site através do endereço **http://localhost:3000/app/**
+Agora, para ajudar na manutenção e nos testes da aplicação, vamos instalar um pacote chamado NodeMon, que reinicia o servidor toda vez que identifica uma mudança na estrutura do projeto ou na versão de um arquivo. Execute o seguinte comando: 
 
-Em seguida, faça o deploy do projeto para o ambiente do Heroku e teste novamente a aplicação no ambiente de nuvem. Para isso, utilize o comando a seguir, onde appnodeXYZ é o nome da aplicação no ambiente do Heroku. Substitua XYZ pelas iniciais do seu nome.
+```bash
+npm install -g nodemon
+```
 
-> heroku apps:create appnodeXYZ
+OBS: O parâmetro ‘-g’ é utilizado para instalar o pacote em todos os projetos de Node de maneira global.
 
-Monte um snapshot com o git e faça o deploy da aplicação para o Heroku. Para isso execute os comandos a seguir, um de cada vez.
+Para teste execute o nodemon sobre o arquivo ‘server.js’, da seguinte maneira:
 
-### adiciona os arquivos à stage do git
+```bash
+nodemon server.js
+```
 
-> git add .
+Verifique o funcionamento, acessando o endereço: [**http://localhost:3000/app/**](http://localhost:3000/app/)
 
-### realiza commit criando novo snapshot
+### Deploy no servidor RailWay:
 
-> git commit -m "Primeira versão"
+Antes de tudo, devemos inicializar o projeto como um repositório no GitHub e adicionar as mudanças. Para isso, execute os seguintes comandos: 
 
-### faz o deploy do branch master da aplicação para o heroku
+```bash
+git init          #Inicializa o projeto como repositório
+git add .         #Adiciona mudanças préviamente realizadas.
+git commit -m "Primeiro Commit do Projeto" #Espeçifica mensagem de commit
+```
 
-> git push remote master
+Em seguida, executaremos alguns comandos para gerar um repositório no site do GitHub que será utilizado para gerar o projeto no RailWay: 
 
-Faça um teste da sua aplicação no Heroku para verificar se está tudo ok. Para isso acesse a URL: **http://appnodexyz.herokuapp.com/app** (lembre-se que o xyz foi substituído pelas suas iniciais).
+```bash
+git remote add origin https://github.com/SEU_USUARIO/seu-repositorio.git
+git branch -M main
+git push -u origin main
+```
 
-Se tudo foi seguido corretamente, você deverá ver a seguinte tela:
+Para o Deploy, acesse o site https://railway.com/  e faça login com o GitHub:
 
-![hello-worl](./documentation/img/hello-worl.png)
+![imagerailway](./documentation/img/login_railway.png)
 
-Se tiver algum problema nesse teste, verifique os logs da sua aplicação no Heroku para identificar a causa do problema. Para isso, use o Heroku CLI para apresentar o final do arquivo de logs com o comando a seguir.
+No DashBoard, clique em “New Project”, selecione a opção “Deploy from GitHub Repo” e autorize o RailWay a acessar seus repositórios. Selecione então o repositório do seu projeto. Assim o RailWay vai identificar o projeto automaticamente como Node e iniciar o deploy.
 
-> heroku logs --tail
-
-**OBSERVAÇÃO:** Esse comando irá conectar seu ambiente ao arquivo de logs e tudo que acontecer será apresentado para você. Se quiser cancelar isso, basta pressionar CTRL + C.
+![dashboard-railway](documentation/img/dashboard_railway.png)
+Para testar a aplicação acesse o link disponibilizado pelo próprio RailWay do seu projeto.
 
 ## Passo 2 – Criar a uma API para o CRUD de produtos
 
@@ -96,7 +128,7 @@ Nessa etapa, vamos criar uma API que vai oferecer a seguinte interface:
 | Alterar um produto           | UPDATE            | PUT /produtos/id:    |
 | Excluir um produto           | DELETE            | DELETE /produtos/:id |
 
-Inicialmente, vamos fazer uma prova de conceito com dados baseados em um array simples de objetos. Esse array é apresentado no quadro a seguir.
+Inicialmente para proṕositos de teste, vamos criar um array para armazenar objetos. Esse array é apresentado nesse quadro: 
 
 ```javascript
 const db_produtos = {
@@ -110,7 +142,7 @@ const db_produtos = {
 }
 ```
 
-Agora, crie um router do Express para a API em um arquivo `/api/routes/apiRouter.js`, e complemente o código iniciado no quaro abaixo.
+Agora para consumir os dados provinientes do Json, vamos criar um router do Express para a API, em um arquivo **‘/api/routes/apiRouter.js’** e complementar com o código abaixo: 
 
 ```javascript
 const express = require ('express')
@@ -133,7 +165,7 @@ res.status(200).json (lista_produtos)
 module.exports = apiRouter;
 ```
 
-Pronto, inclua no seu arquivo `server.js` a referência ao API router na nossa aplicação do Express.
+Depois disso, inclua no arquivo ‘server.js’ a referência à rota da API da nossa aplicação do Express:
 
 ```javascript
 const apiRouter = require('./api/routes/api_routes')
@@ -141,21 +173,30 @@ const apiRouter = require('./api/routes/api_routes')
 app.use ('/api', apiRouter)
 ```
 
-Faça um teste da API que deve retornar os produtos definidos no array, conforme imagem a seguir.
+Agora, faça um teste da API, que deve retornar os produtos estabelecidos no Json, coforme a imagem a seguir:
 
-![test-api-products](./documentation/img/test-api-products.png)
+![test-api-products](./documentation/img/json_data.png)
 
-Agora vamos converter nossa API para acessar um banco de dados real ao invés do array de testes.
+Para dar continuidade ao projeto, agora vamos converter nossa API para receber dados de um banco de dados real, ao invés de um conjunto fictício.
 
-Para criar o Banco de Dados, acesse o painel do Heroku, acesse sua aplicação, escolha a ficha Resources e inclua um Add-on chamado Heroku Postgres, conforme mostrado na imagem a seguir.
+Para criar o banco de dados, acesso o site do RailWay novamente e no dashboard do mesmo projeto crie um serviço de "Database" e clique em PostgreSQL.
 
-![heroku-postgres](./documentation/img/heroku-postgres.png)
+Após o banco de dados ter sido criado, clique no card da aplicação Node, e navegue até a página “Variables”, clique em “New Variable”, então adicione :
 
-Em seguida, localize as credenciais de acesso, abrindo o add-on do Postgres e selecionando a opção Settings -> View Credentials. Nesta tela você vai encontrar os dados para conexão com o banco de dados (host, database, user, port, password). Utilize um cliente de bancos de dados de sua preferência para conectar ao ambiente e criar as tabelas necessárias e inserir dados preliminares.
+```bash
+ Variable name: SECRET_KEY
+ Value: minha_chave_super_secreta_jwt_123456789
+ ```
 
-Vamos precisar de uma tabela de produtos. A seguir você encontrará os scripts necessários para a configuração e carga inicial da tabela de **Produto.**
+Além disso, altere o valor do parâmetro “DATABASE_URL” no arquivo ‘.env’ para o valor presente na área de mesmo nome na página “Variables” do banco de dados no RailWay.
 
-Script para criação da tabela **Produto**
+Agora que temos o banco de dados criado e conectado ao nosso projeto, devemos criar as tabelas e inserir conteúdos que serão disponibilizado.
+
+Vamos utilizar um script para a criação da tabela, para isso, vá até o card do Postgre no projeto e clique em “Database”, dentro dessa página clique em conectar e depois em “Public network” e então copie o seguinte comando e cole no terminal para executar:
+
+![database_comand](documentation/img/dashboard_command.png)
+
+Agora dentro do cliente Postgre no terminal, digite o script SQL para a criação da tabela **Produto**:
 
 ```javascript
 CREATE SEQUENCE produto_id_seq;
@@ -186,7 +227,7 @@ INSERT INTO produto (descricao, valor, marca)
     VALUES('Feijão Carioquinha', 5, 'Xap');
 ```
 
-Agora que temos o banco de dados funcional, vamos utilizar o módulo Knex para realizar a conexão com o banco de dados. Para isso, inclua o código de configuração da conexão com o banco de dados no início do router, logo após a importação dos módulos necessários, conforme quadro a seguir.
+Com o banco de dados inicializado e configurado, utilizaremos agora o módulo “Knex” para executar a conexão entre o projeto Node e o banco de dados propriamente dito. Adicione o código abaixo logo depois da importação dos módulos necessário
 
 ```javascript
 const knex = require('knex')({
@@ -212,7 +253,7 @@ apiRouter.get(endpoint + 'produtos', (req, res) => {
 })
 ```
 
-Agora é sua vez de montar o código para realizar as demais operações do CRUD para a nossa API. Implemente os códigos para as requisições a seguir:
+Agora, é sua vez de desenvolver o código para as operações restantes e por em prática o que foi visto até agora, leve em conta as seguintes operações:
 
 ```javascript
 apiRouter.get(endpoint + 'produtos/:id', (req, res) => { ... })
@@ -223,7 +264,7 @@ apiRouter.delete(endpoint + 'produtos/:id', (req, res) => { ... })
 
 Em seguida, teste cada um dos endpoints do CRUD da API.
 
-## Passo 3 – Montar a parte de segurança da API
+## Passo 3 – Configurações de segurança da API
 
 Nessa etapa, vamos criar os endpoints para permitir que sejam registrados novos usuários e que se possa realizar o login. Para a parte de segurança, a API terá a seguinte interface:
 
@@ -232,7 +273,7 @@ Nessa etapa, vamos criar os endpoints para permitir que sejam registrados novos 
 | Incluir um produto        | POST /seguranca/register |
 | Obter a lista de Produtos | POST /seguranca/login    |
 
-Vamos precisar também de uma tabela usuários. A seguir, você encontrará os scripts necessários para a configuração e carga inicial dessa tabela.
+Para determinada interface devemos criar uma tabela chamda ‘usuários’. No quadro abaixo constam os scripts que deverão ser inseridos no cliente do banco de dados, como já foi feito anteriormente:
 
 Script para criação da tabela **Usuário**
 
@@ -249,7 +290,7 @@ CREATE TABLE public.usuario (
 );
 ```
 
-Script para carga inicial da tabela de **Usuario**
+Em seguida, insira o scrpit para gerar o conteúdo inicial da tabela de usuários
 
 ```javascript
 INSERT INTO usuario (nome, login, senha, email, roles)
@@ -258,11 +299,11 @@ INSERT INTO usuario (nome, login, senha, email, roles)
     VALUES('admin', 'admin', ' $2a$08$tprzZIs1OTKVMaVzZWrKfe8rX3toatWD6lsvp4u9AR54mrbSSLX7e', 'admini@abc.com.br', 'USER;ADMIN');
 ```
 
-**OBSERVAÇÃO:** Perceba que a senha (1234) é armazenada no banco na forma de um hash e não no formato aberto. A representação acima é obtida por meio do módulo bcrypt, mencionado no início do roteiro.
+**OBSERVAÇÃO:**  A senha utilizada para o conteúdo de teste (1234) é armazenada no banco de dados na forma de um hash e não no formato disponível, de maneira a garantir a segurança e criptografia de tal parâmetro. Esse método é possível por meio do módulo “bycrypt”
 
-No nosso Router da API, vamos incluir dois middlewares para tratar as rotas de registro e login de usuários.
+Agora devemos inserir no código do router da api, dois middlewares relativos aos endpoints de cadastro e login.
 
-O quadro a seguir, apresenta o código para o registro de novos usuários. Nesse código, invocamos o módulo knex para inserir o usuário e caso tudo corra bem, enviamos o código do usuário inserido de volta para o cliente. Perceba que será necessário importar o módulo bcrypt no início do Router.
+No quadro a seguir, desenvolvemos o endpoint do registro, por meio da utilização do módulo ‘knex’. Para isso é necessário importar o módulo ‘bycrypt’ no início do código:
 
 ```javascript
 const bcrypt = require('bcryptjs')
@@ -287,9 +328,9 @@ apiRouter.post (endpoint + 'seguranca/register', (req, res) => {
 })
 ```
 
-Agora, precisamos do código para o middleware que verifica o login e a senha do usuário. Uma requisição de login para a API retornará uma token de acesso que deverá ser utilizada em todas as demais requisições.
+Em sequência precisamos desenvolver o middleware relativo ao login, esse método deverá gerar uma requisição de login para a API que deverá retornar um token que será utilizado para as demais aplicações.
 
-O quadro a seguir apresenta o código de validação do login que, além de verificar se o usuário existe no banco de dados, compara a senha por meio do hash da senha informada com o hash da senha mantida no banco. Em seguida, se tudo estiver ok, é gerada uma token baseada no padrão JWT, utilizando o módulo JSONWebToken. Para isso será necessário importar este módulo no início do arquivo do Router.
+O próximo quadro apresenta o código de validação, que verifica se o usuário existe dentro do banco de dados e além disso compara o hash da senha informada com a senha presente no banco de dados. Se todas as informações forem validadas é gerado um token padrão JWT, com base no módulo JsonWebToken, e para isso, devemos importar o mesmo no início do código do router.
 
 ```javascript
 const jwt = require('jsonwebtoken')
@@ -327,13 +368,13 @@ apiRouter.post(endpoint + 'seguranca/login', (req, res) => {
 
 Todas as vezes que um usuário
 
-## Passo 4 – Configurar a segurança nos endpoints da API
+## Passo 4 – Configurar a segurança nos endpoints
 
-Nessa etapa, vamos alterar a API da parte de produtos para controlar o acesso aos recursos disponíveis. Os usuários comuns que possuam a role USER podem fazer leitura dos produtos, porém, apenas usuários com a role ADMIN podem realizar as operações de CREATE, DELETE e UPDATE do CRUD.
+Nesse passo, devemos configurar a parte de segurança dos endpoints da Api, de forma a controlar o acesso aos recursos disponíveis. O controle de acesso deve funcionar garantindo que usários comuns possam apenas visualizar os dados (READ), e apenas administradores tenham acesso às outras operações (CREATE, DELETE, UPDATE).
 
-Esse controle é realizado por meio da token que é fornecida quando é realizado o login da aplicação. Nesse ponto, precisamos de uma middleware que verifique se a token foi recebida e outro que verifique as roles que o usuário possui. Estes middlewares poderão ser incluídos nos middlewares da API de acordo com a necessidade da aplicação.
+O controle é realizado pelo token que foi gerado no login da aplicação. Dessa maneira, precisamos de um middleware que verifique se o token foi recebido e outro que interprete o role desse usário.
 
-O quadro abaixo traz o código do middleware checkToken que executa a verificação de existência e consistência da token que não pode ser alterada no cliente.
+Utilize o código abaixo para implementar os novos middlewares no router da API:
 
 ```javascript
 let checkToken = (req, res, next) => {
@@ -361,7 +402,7 @@ Perceba que a token é transmitida através do cabeçalho authorization da requi
 
 > Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6....
 
-No quadro a seguir, é apresentado o código do middleware que verifica se o usuário possui a role ADMIN a partir do id do usuário recebido via token repassada na requisição.
+No próximo quadro é apresentado o middleware que detecta se o usário possui o role de ADMIN e a partir disso, autoriza ou não o uso das demais operações, a partir do token recebido:
 
 ```javascript
 let isAdmin = (req, res, next) => {
@@ -380,6 +421,8 @@ let isAdmin = (req, res, next) => {
                     res.status(403).json({ message: 'Role de ADMIN requerida' })
                     return
                 }
+            } else {
+                res.status(404).json({message: "Usuário não encontrado"})
             }
         })
         .catch (err => {
@@ -389,15 +432,15 @@ let isAdmin = (req, res, next) => {
 }
 ```
 
-Agora que já temos os middlewares de verificação da token, podemos incluir estes middlewares nos endpoints da API de produtos, conforme mostrado no quadro a seguir.
-
+Agora que já temos os middlewares de verificação da token, basta adicioná-los nos endpoints respectivos a cada operação:
 ```javascript
-// rotinas permitidas para qualquer usuário
+ //Operações permitidas para qualquer usuário
 apiRouter.get(endpoint + 'produtos', checkToken, (req, res) => { ... })
 apiRouter.get(endpoint + 'produtos/:id', checkToken, (req, res) => { ... })
 
-// rotinas permitidas apenas para administradores
+ //Operações permitidas apenas para admin
 apiRouter.post(endpoint + 'produtos', checkToken, isAdmin, (req, res) => { ... }) apiRouter.put(endpoint + 'produtos/:id', checkToken, isAdmin, (req, res) => { ... }) apiRouter.delete(endpoint + 'produtos/:id', checkToken, isAdmin, (req, res) => { ... })
-```
+ ```   
+
 
 Esta é a implementação de um módulo servidor que dá sustentação à criação de diversas aplicações. Agora, exercite-se montando um cliente para consumir os dados disponibilizados com o devido controle de segurança.
