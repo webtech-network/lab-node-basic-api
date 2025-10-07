@@ -2,6 +2,7 @@
 
 # API RESTful com Node, PostgreSQL e JWT.
 
+
 A partir desse roteiro de etapas vamos desenvolver uma API RESTful para a execução de operações CRUD (Create, Read, Update, Delete) sob uma base de dados, parâmetrizando a segurança e acesso a esses dados com uso de tokens JWT( Json Web Token). 
 
 No passo a passo implementaremos isso de forma gradual.
@@ -444,6 +445,7 @@ apiRouter.post(endpoint + 'produtos', checkToken, isAdmin, (req, res) => { ... }
 
 
 Esta é a implementação de um módulo servidor que dá sustentação à criação de diversas aplicações. Agora, exercite-se montando um cliente para consumir os dados disponibilizados com o devido controle de segurança.
+
 
 
 
