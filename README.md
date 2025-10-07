@@ -1,6 +1,6 @@
 # node-basic-app
 
-# API RESTful com Banco de Dados e Segurança
+# API RESTful com Node, PostgreSQL e JWT.
 
 A partir desse roteiro de etapas vamos desenvolver uma API RESTful para a execução de operações CRUD (Create, Read, Update, Delete) sob uma base de dados, parâmetrizando a segurança e acesso a esses dados com uso de tokens JWT( Json Web Token). 
 
@@ -95,8 +95,8 @@ Antes de tudo, devemos inicializar o projeto como um repositório no GitHub e ad
 
 ```bash
 git init          #Inicializa o projeto como repositório
-git add .         #Adiciona mudanças préviamente realizadas.
-git commit -m "Primeiro Commit do Projeto" #Espeçifica mensagem de commit
+git add .         #Adiciona mudanças previamente realizadas.
+git commit -m "Primeiro Commit do Projeto" #Especifica mensagem de commit
 ```
 
 Em seguida, executaremos alguns comandos para gerar um repositório no site do GitHub que será utilizado para gerar o projeto no RailWay: 
@@ -173,7 +173,7 @@ const apiRouter = require('./api/routes/api_routes')
 app.use ('/api', apiRouter)
 ```
 
-Agora, faça um teste da API, que deve retornar os produtos estabelecidos no Json, coforme a imagem a seguir:
+Agora, faça um teste da API, que deve retornar os produtos estabelecidos no JSON, coforme a imagem a seguir:
 
 ![test-api-products](./documentation/img/json_data.png)
 
@@ -444,5 +444,6 @@ apiRouter.post(endpoint + 'produtos', checkToken, isAdmin, (req, res) => { ... }
 
 
 Esta é a implementação de um módulo servidor que dá sustentação à criação de diversas aplicações. Agora, exercite-se montando um cliente para consumir os dados disponibilizados com o devido controle de segurança.
+
 
 
