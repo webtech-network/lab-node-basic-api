@@ -602,3 +602,8 @@ apiRouter.post(endpoint + 'produtos', checkToken, isAdmin, (req, res) => { ... }
 Esta é a implementação de um módulo servidor que dá sustentação à criação de diversas aplicações. Agora, exercite-se montando um cliente para consumir os dados disponibilizados com o devido controle de segurança.
 
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 2f37920 (Update README.md)
