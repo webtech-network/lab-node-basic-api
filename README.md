@@ -95,8 +95,8 @@ Antes de tudo, devemos inicializar o projeto como um repositório no GitHub e ad
 
 ```bash
 git init          #Inicializa o projeto como repositório
-git add .         #Adiciona mudanças préviamente realizadas.
-git commit -m "Primeiro Commit do Projeto" #Espeçifica mensagem de commit
+git add .         #Adiciona mudanças previamente realizadas.
+git commit -m "Primeiro Commit do Projeto" #Especifica mensagem de commit
 ```
 
 Em seguida, executaremos alguns comandos para gerar um repositório no site do GitHub que será utilizado para gerar o projeto no RailWay: 
@@ -444,4 +444,5 @@ apiRouter.post(endpoint + 'produtos', checkToken, isAdmin, (req, res) => { ... }
 
 
 Esta é a implementação de um módulo servidor que dá sustentação à criação de diversas aplicações. Agora, exercite-se montando um cliente para consumir os dados disponibilizados com o devido controle de segurança.
+
 
