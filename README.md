@@ -185,49 +185,145 @@ Para criar o banco de dados, acesso o site do RailWay novamente e no dashboard d
 Após o banco de dados ter sido criado, clique no card da aplicação Node, e navegue até a página “Variables”, clique em “New Variable”, então adicione :
 
 ```bash
- Variable name: SECRET_KEY
- Value: minha_chave_super_secreta_jwt_123456789
+ Variable name:SECRET_KEY
+ Value:minha_chave_super_secreta_jwt_123456789
+ ```
+
+ ```bash
+ Variable name:DATABASE_URL
+ Value: #Cole a URL do banco de dados presente no serviço do Railway.
  ```
 
 Além disso, altere o valor do parâmetro “DATABASE_URL” no arquivo ‘.env’ para o valor presente na área de mesmo nome na página “Variables” do banco de dados no RailWay.
 
 Agora que temos o banco de dados criado e conectado ao nosso projeto, devemos criar as tabelas e inserir conteúdos que serão disponibilizado.
 
-Vamos utilizar um script para a criação da tabela, para isso, vá até o card do Postgre no projeto e clique em “Database”, dentro dessa página clique em conectar e depois em “Public network” e então copie o seguinte comando e cole no terminal para executar:
+Vamos utilizar de scritps ‘Knex” e da interface de comandos do Railway, a fim de gerar as tabelas de ‘Produtos” e ‘’Usuários’.
 
-![database_comand](documentation/img/dashboard_command.png)
+Como primeiro passo, devemos criar um arquivo JavaScript chamado ‘knexfile’, que servirá como arquivo modulador das operações de migração do banco de dados. Insira o conteúdo do quadro abaixo no arquivo criado:
 
-Agora dentro do cliente Postgre no terminal, digite o script SQL para a criação da tabela **Produto**:
-
-```javascript
-CREATE SEQUENCE produto_id_seq;
-CREATE TABLE produto (
-    id int4 NOT NULL DEFAULT nextval('produto_id_seq'),
-    descricao varchar(200) NOT NULL,
-    valor numeric NOT NULL DEFAULT 0,
-    marca varchar(100) NULL,
-    CONSTRAINT produto_pk PRIMARY KEY (id)
-);
-CREATE UNIQUE INDEX produto_id_idx ON public.produto USING btree (id);
-```
-
-Script para carga inicial da tabela de **Produto**
 
 ```javascript
-INSERT INTO produto (descricao, valor, marca)
-    VALUES('Arroz parboilizado 5Kg', 25, 'Tio João');
-INSERT INTO produto (descricao, valor, marca)
-    VALUES('Maionese 250gr', 7.2, 'Helmanns');
-INSERT INTO produto (descricao, valor, marca)
-    VALUES('Iogurte Natural 200ml', 2.5, 'Itambé');
-INSERT INTO produto (descricao, valor, marca)
-    VALUES('Nescau 400gr', 8, 'Nestlé');
-INSERT INTO produto (descricao, valor, marca)
-    VALUES('Batata Palha 180gr', 5.20, 'Chipps');
-INSERT INTO produto (descricao, valor, marca)
-    VALUES('Feijão Carioquinha', 5, 'Xap');
+require("dotenv").config();
+module.exports = {
+  development: {
+    client: "pg",
+    connection: {
+      host: process.env.DB_HOST || "localhost",
+      port: process.env.DB_PORT || 5432,
+      database: process.env.DB_NAME || "produtos_db",
+      user: process.env.DB_USER || "postgres",
+      password: process.env.DB_PASSWORD || "postgres",
+    },
+    migrations: { directory: "./database/migrations" },
+    seeds: { directory: "./database/seeds" },
+  },
+  production: {
+    client: "pg",
+    connection: process.env.DATABASE_URL,
+    migrations: { directory: "./database/migrations" },
+    seeds: { directory: "./database/seeds" },
+    ssl: { rejectUnauthorized: false },
+  },
+};
 ```
 
+Após isso, crie um diretório chamado de “database” e dentro do mesmo crie duas pastas, uma chamada “migrations” e outra com nome de “seeds”. A pasta migrations, servirá para a manutenção dos arquivos de criação das tabelas necessárias e a pasta “seeds” servirá para gerir os arquivos de inserção e carregamento do conteúdo do nosso banco de dados. Dentro de migrations, insira o código abaixo em um arquivo para criar a tabela de produtos:
+
+```javascript
+exports.up = function (knex) {
+  return knex.schema.createTable("produto", (table) => {
+    table.increments("id").primary();
+    table.string("descricao").notNullable();
+    table.decimal("valor", 10, 2).notNullable();
+    table.string("marca").notNullable();
+    table.timestamps(true, true);
+  });
+};
+
+exports.down = function (knex) {
+  return knex.schema.dropTable("produto");
+};
+```
+
+Agora, dentro da pasta seeds, crie o arquivo para o script de carga do banco de dados e insira o conteúdo do quadro abaixo:
+
+```javascript
+exports.seed = async function(knex) {
+  // Limpar tabela
+  await knex('produtos').del()
+  
+  // Inserir produtos
+  await knex('produtos').insert([
+    {
+      descricao: 'Notebook Dell Inspiron 15',
+      valor: 3500.00,
+      marca: 'Dell'
+    },
+    {
+      descricao: 'Mouse Logitech MX Master 3',
+      valor: 450.00,
+      marca: 'Logitech'
+    },
+    {
+      descricao: 'Teclado Mecânico Keychron K2',
+      valor: 650.00,
+      marca: 'Keychron'
+    },
+    {
+      descricao: 'Monitor LG UltraWide 29"',
+      valor: 1200.00,
+      marca: 'LG'
+    },
+    {
+      descricao: 'Webcam Logitech C920',
+      valor: 380.00,
+      marca: 'Logitech'
+    },
+    {
+      descricao: 'Headset HyperX Cloud II',
+      valor: 550.00,
+      marca: 'HyperX'
+    },
+    {
+      descricao: 'SSD Samsung 1TB',
+      valor: 520.00,
+      marca: 'Samsung'
+    },
+    {
+      descricao: 'Memória RAM Corsair 16GB',
+      valor: 350.00,
+      marca: 'Corsair'
+    },
+    {
+      descricao: 'Placa de Vídeo RTX 3060',
+      valor: 2800.00,
+      marca: 'NVIDIA'
+    },
+    {
+      descricao: 'Cadeira Gamer DXRacer',
+      valor: 1800.00,
+      marca: 'DXRacer'
+    }
+  ])
+  
+  console.log('✅ Produtos criados com sucesso!')
+}
+```
+
+Agora, devemos criar o script que estabelecerá  a conexão com o banco de dados, para isso, dentro da pasta database, crie um arquivo avulso chamado “connection.js” e insira o conteúdo abaixo:
+```javascript
+const knex = require('knex')
+const knexConfig = require('../knexfile')
+
+const environment = process.env.NODE_ENV || 'development'
+const config = knexConfig[environment]
+
+const db = knex(config)
+
+module.exports = db
+
+```
 Com o banco de dados inicializado e configurado, utilizaremos agora o módulo “Knex” para executar a conexão entre o projeto Node e o banco de dados propriamente dito. Adicione o código abaixo logo depois da importação dos módulos necessário
 
 ```javascript
@@ -240,6 +336,7 @@ const knex = require('knex')({
     }
 });
 ```
+
 
 Agora, altere o código do middleware que atende às requisições de GET /api/produtos, colocando o código que segue no quadro a seguir
 
