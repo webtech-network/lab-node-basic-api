@@ -464,9 +464,67 @@ apiRouter.post(endpoint + 'seguranca/login', (req, res) => {
 })
 ```
 
-Todas as vezes que um usuário
+## Passo 4 - Execução da migração do banco de dados
 
-## Passo 4 – Configurar a segurança nos endpoints
+Nessa etapa, devemos executar os scripts de migração do banco de dados, tendo em vista as mudanças que fizemos. Para isso, se certifique de que o arquivo “package.json” esteja confgurado como o quadro abaixo:
+
+```javascript
+{
+  "name": "nome-da-sua-aplicacao
+   "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "migrate": "npx knex migrate:latest",
+    "seed": "npx knex seed:run",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "knex": "^3.1.0",
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}
+```
+Em seguida, no diretório do projeto, instale o RailWay CLI, por meio do comando a seguir:
+>```bash
+>$ npm i -g @railway/cli
+>```
+
+Faça o login com a sua conta do Railway:
+>```bash
+>$ railway login
+>```
+Vincule ao projeto que estamos fazendo:
+>```bash
+>$ railway link
+>```
+
+E então, devemos executar o script de migração do banco, para isso, cole o comando abaixo no terminal: 
+
+>```
+>$ railway run npx knex migrate:latest --env production
+>```
+Em seguida, preencheremos as tabelas que foram criadas pelo script anterior com o conteúdo das seeds, para isso execute o comando abaixo: 
+
+>```bash
+>$ railway run npx knex seed:run --env production
+>```
+
+Após esses passos, o banco de dados deve estar completamente funcional e pronto para o consumo da API.
+## Passo 5 – Configurar a segurança nos endpoints
 
 Nesse passo, devemos configurar a parte de segurança dos endpoints da Api, de forma a controlar o acesso aos recursos disponíveis. O controle de acesso deve funcionar garantindo que usários comuns possam apenas visualizar os dados (READ), e apenas administradores tenham acesso às outras operações (CREATE, DELETE, UPDATE).
 
