@@ -2,6 +2,7 @@
 
 # API RESTful com Node, PostgreSQL e JWT.
 
+
 A partir desse roteiro de etapas vamos desenvolver uma API RESTful para a execução de operações CRUD (Create, Read, Update, Delete) sob uma base de dados, parâmetrizando a segurança e acesso a esses dados com uso de tokens JWT( Json Web Token). 
 
 No passo a passo implementaremos isso de forma gradual.
@@ -184,49 +185,145 @@ Para criar o banco de dados, acesso o site do RailWay novamente e no dashboard d
 Após o banco de dados ter sido criado, clique no card da aplicação Node, e navegue até a página “Variables”, clique em “New Variable”, então adicione :
 
 ```bash
- Variable name: SECRET_KEY
- Value: minha_chave_super_secreta_jwt_123456789
+ Variable name:SECRET_KEY
+ Value:minha_chave_super_secreta_jwt_123456789
+ ```
+
+ ```bash
+ Variable name:DATABASE_URL
+ Value: #Cole a URL do banco de dados presente no serviço do Railway.
  ```
 
 Além disso, altere o valor do parâmetro “DATABASE_URL” no arquivo ‘.env’ para o valor presente na área de mesmo nome na página “Variables” do banco de dados no RailWay.
 
 Agora que temos o banco de dados criado e conectado ao nosso projeto, devemos criar as tabelas e inserir conteúdos que serão disponibilizado.
 
-Vamos utilizar um script para a criação da tabela, para isso, vá até o card do Postgre no projeto e clique em “Database”, dentro dessa página clique em conectar e depois em “Public network” e então copie o seguinte comando e cole no terminal para executar:
+Vamos utilizar de scritps ‘Knex” e da interface de comandos do Railway, a fim de gerar as tabelas de ‘Produtos” e ‘’Usuários’.
 
-![database_comand](documentation/img/dashboard_command.png)
+Como primeiro passo, devemos criar um arquivo JavaScript chamado ‘knexfile’, que servirá como arquivo modulador das operações de migração do banco de dados. Insira o conteúdo do quadro abaixo no arquivo criado:
 
-Agora dentro do cliente Postgre no terminal, digite o script SQL para a criação da tabela **Produto**:
-
-```javascript
-CREATE SEQUENCE produto_id_seq;
-CREATE TABLE produto (
-    id int4 NOT NULL DEFAULT nextval('produto_id_seq'),
-    descricao varchar(200) NOT NULL,
-    valor numeric NOT NULL DEFAULT 0,
-    marca varchar(100) NULL,
-    CONSTRAINT produto_pk PRIMARY KEY (id)
-);
-CREATE UNIQUE INDEX produto_id_idx ON public.produto USING btree (id);
-```
-
-Script para carga inicial da tabela de **Produto**
 
 ```javascript
-INSERT INTO produto (descricao, valor, marca)
-    VALUES('Arroz parboilizado 5Kg', 25, 'Tio João');
-INSERT INTO produto (descricao, valor, marca)
-    VALUES('Maionese 250gr', 7.2, 'Helmanns');
-INSERT INTO produto (descricao, valor, marca)
-    VALUES('Iogurte Natural 200ml', 2.5, 'Itambé');
-INSERT INTO produto (descricao, valor, marca)
-    VALUES('Nescau 400gr', 8, 'Nestlé');
-INSERT INTO produto (descricao, valor, marca)
-    VALUES('Batata Palha 180gr', 5.20, 'Chipps');
-INSERT INTO produto (descricao, valor, marca)
-    VALUES('Feijão Carioquinha', 5, 'Xap');
+require("dotenv").config();
+module.exports = {
+  development: {
+    client: "pg",
+    connection: {
+      host: process.env.DB_HOST || "localhost",
+      port: process.env.DB_PORT || 5432,
+      database: process.env.DB_NAME || "produtos_db",
+      user: process.env.DB_USER || "postgres",
+      password: process.env.DB_PASSWORD || "postgres",
+    },
+    migrations: { directory: "./database/migrations" },
+    seeds: { directory: "./database/seeds" },
+  },
+  production: {
+    client: "pg",
+    connection: process.env.DATABASE_URL,
+    migrations: { directory: "./database/migrations" },
+    seeds: { directory: "./database/seeds" },
+    ssl: { rejectUnauthorized: false },
+  },
+};
 ```
 
+Após isso, crie um diretório chamado de “database” e dentro do mesmo crie duas pastas, uma chamada “migrations” e outra com nome de “seeds”. A pasta migrations, servirá para a manutenção dos arquivos de criação das tabelas necessárias e a pasta “seeds” servirá para gerir os arquivos de inserção e carregamento do conteúdo do nosso banco de dados. Dentro de migrations, insira o código abaixo em um arquivo para criar a tabela de produtos:
+
+```javascript
+exports.up = function (knex) {
+  return knex.schema.createTable("produto", (table) => {
+    table.increments("id").primary();
+    table.string("descricao").notNullable();
+    table.decimal("valor", 10, 2).notNullable();
+    table.string("marca").notNullable();
+    table.timestamps(true, true);
+  });
+};
+
+exports.down = function (knex) {
+  return knex.schema.dropTable("produto");
+};
+```
+
+Agora, dentro da pasta seeds, crie o arquivo para o script de carga do banco de dados e insira o conteúdo do quadro abaixo:
+
+```javascript
+exports.seed = async function(knex) {
+  // Limpar tabela
+  await knex('produtos').del()
+  
+  // Inserir produtos
+  await knex('produtos').insert([
+    {
+      descricao: 'Notebook Dell Inspiron 15',
+      valor: 3500.00,
+      marca: 'Dell'
+    },
+    {
+      descricao: 'Mouse Logitech MX Master 3',
+      valor: 450.00,
+      marca: 'Logitech'
+    },
+    {
+      descricao: 'Teclado Mecânico Keychron K2',
+      valor: 650.00,
+      marca: 'Keychron'
+    },
+    {
+      descricao: 'Monitor LG UltraWide 29"',
+      valor: 1200.00,
+      marca: 'LG'
+    },
+    {
+      descricao: 'Webcam Logitech C920',
+      valor: 380.00,
+      marca: 'Logitech'
+    },
+    {
+      descricao: 'Headset HyperX Cloud II',
+      valor: 550.00,
+      marca: 'HyperX'
+    },
+    {
+      descricao: 'SSD Samsung 1TB',
+      valor: 520.00,
+      marca: 'Samsung'
+    },
+    {
+      descricao: 'Memória RAM Corsair 16GB',
+      valor: 350.00,
+      marca: 'Corsair'
+    },
+    {
+      descricao: 'Placa de Vídeo RTX 3060',
+      valor: 2800.00,
+      marca: 'NVIDIA'
+    },
+    {
+      descricao: 'Cadeira Gamer DXRacer',
+      valor: 1800.00,
+      marca: 'DXRacer'
+    }
+  ])
+  
+  console.log('✅ Produtos criados com sucesso!')
+}
+```
+
+Agora, devemos criar o script que estabelecerá  a conexão com o banco de dados, para isso, dentro da pasta database, crie um arquivo avulso chamado “connection.js” e insira o conteúdo abaixo:
+```javascript
+const knex = require('knex')
+const knexConfig = require('../knexfile')
+
+const environment = process.env.NODE_ENV || 'development'
+const config = knexConfig[environment]
+
+const db = knex(config)
+
+module.exports = db
+
+```
 Com o banco de dados inicializado e configurado, utilizaremos agora o módulo “Knex” para executar a conexão entre o projeto Node e o banco de dados propriamente dito. Adicione o código abaixo logo depois da importação dos módulos necessário
 
 ```javascript
@@ -239,6 +336,7 @@ const knex = require('knex')({
     }
 });
 ```
+
 
 Agora, altere o código do middleware que atende às requisições de GET /api/produtos, colocando o código que segue no quadro a seguir
 
@@ -366,9 +464,67 @@ apiRouter.post(endpoint + 'seguranca/login', (req, res) => {
 })
 ```
 
-Todas as vezes que um usuário
+## Passo 4 - Execução da migração do banco de dados
 
-## Passo 4 – Configurar a segurança nos endpoints
+Nessa etapa, devemos executar os scripts de migração do banco de dados, tendo em vista as mudanças que fizemos. Para isso, se certifique de que o arquivo “package.json” esteja confgurado como o quadro abaixo:
+
+```javascript
+{
+  "name": "nome-da-sua-aplicacao
+   "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "migrate": "npx knex migrate:latest",
+    "seed": "npx knex seed:run",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "knex": "^3.1.0",
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}
+```
+Em seguida, no diretório do projeto, instale o RailWay CLI, por meio do comando a seguir:
+>```bash
+>$ npm i -g @railway/cli
+>```
+
+Faça o login com a sua conta do Railway:
+>```bash
+>$ railway login
+>```
+Vincule ao projeto que estamos fazendo:
+>```bash
+>$ railway link
+>```
+
+E então, devemos executar o script de migração do banco, para isso, cole o comando abaixo no terminal: 
+
+>```
+>$ railway run npx knex migrate:latest --env production
+>```
+Em seguida, preencheremos as tabelas que foram criadas pelo script anterior com o conteúdo das seeds, para isso execute o comando abaixo: 
+
+>```bash
+>$ railway run npx knex seed:run --env production
+>```
+
+Após esses passos, o banco de dados deve estar completamente funcional e pronto para o consumo da API.
+## Passo 5 – Configurar a segurança nos endpoints
 
 Nesse passo, devemos configurar a parte de segurança dos endpoints da Api, de forma a controlar o acesso aos recursos disponíveis. O controle de acesso deve funcionar garantindo que usários comuns possam apenas visualizar os dados (READ), e apenas administradores tenham acesso às outras operações (CREATE, DELETE, UPDATE).
 
@@ -445,4 +601,16 @@ apiRouter.post(endpoint + 'produtos', checkToken, isAdmin, (req, res) => { ... }
 
 Esta é a implementação de um módulo servidor que dá sustentação à criação de diversas aplicações. Agora, exercite-se montando um cliente para consumir os dados disponibilizados com o devido controle de segurança.
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 2f37920 (Update README.md)
+=======
+>>>>>>> 7b924a6 (alt:atualizção)
+=======
+
+>>>>>>> b2e9dcd (alteração: atualização - README)
